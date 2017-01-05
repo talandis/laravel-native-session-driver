@@ -1,85 +1,23 @@
-# Laravel Bundle for Lithuanian/Latvian Banks internet services
+# Native session driver for Laravel 5
 
-### Banks implemented
-
-Lithuania: Danske, DNB, Nordea, SEB, Šiaulių bankas, Swedbank
-Latvian: Citadele, SEB
 
 ### Installation
-
 
 Require this package with composer:
 
 ```
-composer require talandis/laravel-banklinks
+composer require talandis/laravel-native-session-driver
 ```
 
 ### Configuration
 
 
-After updating composer, add the ServiceProvider to the providers array in config/app.php
+After updating composer, remove the original Session service provider and add custom to the providers array in config/app.php
 
 ```
-Talandis\LaravelBanklinks\LaravelBanklinksServiceProvider::class,
+Talandis\LaravelNativeSession\NativeSessionServiceProvider::class,
 ```
-
-Copy the package config to your local config with the publish command:
-
-```
-php artisan vendor:publish --provider="Talandis\LaravelBanklinks\LaravelBanklinksServiceProvider"
-```
-
-Don't forget to enter your certificates and other details into configuration files.
 
 ### Usage
 
-#### Payment requests
-
-Below is a simple sample of payment request.
-
-```php
-$bank = new \Talandis\LaravelBanklinks\Lithuania\SEB();
-$bank->setConfiguration( config('banklinks.lithuania-seb') );   // This line is optional. Same configuration is read automatically
-$bank->setCallbackUrl( url( 'callback/seb' ) );
-$bank->setCancelUrl( url('cancel/seb' ) );
-
-$requestData = $bank->getPaymentRequest(1, 25, 'Beer + Movie');
-$requestUrl = $bank->getRequestUrl();
-```
-
-Sample form
-
-```html
-<form action="{{$requestUrl}}" method="post">
-    @foreach ( $requestData as $fieldName => $value ):
-      <input type="hidden" name="{{$fieldName}}" value="{{$value}}" />
-    @endforeach
-    <button type="submit">Make payment</button>
-</form>
-```
-
-#### Succesful payment callback
-
-```blade
-$bank = new \Talandis\Banklinks\Lithuania\SEB();
-$bank->setConfiguration( config('banklinks.lithuania-seb') );   // This line is optional. Same configuration is read automatically
-
-if ( $bank->isPaidResponse( Input::all() ) ) {
-
-    echo $bank->getOrderId();
-
-} else if ( $bank->isReturnResponse( Input::all() ) ) {
-
-}
-```
-
-#### Cancelled payment callback
-
-```php
-$bank = new \Talandis\Banklinks\Lithuania\SEB();
-$bank->setConfiguration( config('banklinks.lithuania-seb') );   // This line is optional. Same configuration is read automatically
-
-if ( $bank->isCancelResponse( Input::all() ) ) {
-
-}
-```
+Change config/session.php or .env file to use "native" session driver instead of file
