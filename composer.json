@@ -1,0 +1,24 @@
+{
+    "name": "talandis/laravel-native-session-driver",
+    "description": "Native session driver for Laravel 5",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tomas Talandis",
+            "email": "tomas@talandis.lt"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "5.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src"
+        ],
+        "psr-0": {
+            "Talandis\\LaravelNativeSession\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
